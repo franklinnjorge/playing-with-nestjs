@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put } from "@nestjs/common";
 import { Message } from "./IMessage";
+import { MessageDto } from "./MessageDto";
 import { MessagesService } from "./messages.service";
 
 @Controller("messages")
@@ -13,12 +14,14 @@ export class MessagesController {
 
   @Get(':id')
   findById(@Param() params){
-    return this.messageService.findById(+params.id);
+    return this.messageService.findById(+params.id).catch(e => {
+      throw new NotFoundException(e.message)
+    });
   }
 
   @Post()
-  create(@Body() message: Message){
-    return this.messageService.create(message)
+  create(@Body() messageDto: MessageDto){
+    return this.messageService.create(messageDto)
   }
 
   @Put(':id')
