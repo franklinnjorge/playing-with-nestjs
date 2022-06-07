@@ -34,13 +34,22 @@ export class MessagesService {
       id, 
       ...messageDto,
     }
-    
+
     this.messages.push(message)
     return message
   }
 
-  update(id, message: Message){
+  async update(id: number, messageDto: MessageDto){
     const index = this.messages.findIndex(message => message.id === id)
+     
+    if(index < 0){
+      throw Error('Message not found!')
+    }
+
+    const message: Message = {
+      id, 
+      ...messageDto,
+    };
 
     this.messages[index] = message;
 
