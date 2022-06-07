@@ -56,10 +56,13 @@ export class MessagesService {
     return message; 
   }
 
-  delete(id: number){
-    const index = this.messages.findIndex(message => message.id === id)
+  async delete(id: number){
+    const index = this.messages.findIndex(message => message?.id === id)
+      
+    if(index < 0){
+      throw Error('Message not found!')
+    }
 
     delete this.messages[index] 
-    return true;
   }
 }
